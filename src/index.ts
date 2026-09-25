@@ -1,3 +1,29 @@
+interface McpToolDefinition {
+  name: string;
+  description: string;
+  /** Human-facing one-liner (fleet #1967). Optional; consumers fall back to
+   *  description. Kept in step with shared/src/types.ts — scripts/lib/
+   *  check-inlined-types.mjs reports drift at publish time. */
+  summary?: string;
+  inputSchema: {
+    type: 'object';
+    properties: Record<string, unknown>;
+    required?: string[];
+    anyOf?: Array<{ required: string[] }>;
+    oneOf?: Array<{ required: string[] }>;
+    allOf?: Array<{ required: string[] }>;
+  };
+  outputSchema?: Record<string, unknown>;
+}
+
+interface McpToolExport {
+  tools: McpToolDefinition[];
+  callTool: (name: string, args: Record<string, unknown>) => Promise<unknown>;
+  meter?: { credits: number };
+  cost?: Record<string, unknown>;
+  provider?: string;
+}
+
 /**
  * HTTP Cat MCP — wraps http.cat (free, no auth)
  *
@@ -6,20 +32,6 @@
  * - list_codes: List common HTTP status codes with descriptions
  */
 
-interface McpToolDefinition {
-  name: string;
-  description: string;
-  inputSchema: {
-    type: 'object';
-    properties: Record<string, unknown>;
-    required?: string[];
-  };
-}
-
-interface McpToolExport {
-  tools: McpToolDefinition[];
-  callTool: (name: string, args: Record<string, unknown>) => Promise<unknown>;
-}
 
 const BASE_URL = 'https://http.cat';
 
@@ -62,7 +74,7 @@ const tools: McpToolExport['tools'] = [
   {
     name: 'get_status_cat',
     description:
-      'Get the http.cat image URL for a given HTTP status code. Returns a direct URL to a cat photo illustrating the status code.',
+      'Get a cat image representing an HTTP status code. Provide the code (e.g., 200, 404, 500). Returns the image URL.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -77,7 +89,7 @@ const tools: McpToolExport['tools'] = [
   {
     name: 'list_codes',
     description:
-      'List common HTTP status codes with their descriptions and corresponding http.cat image URLs.',
+      'Browse all available HTTP status codes with descriptions and cat image URLs. Use to find the right code for your status or explore available options.',
     inputSchema: {
       type: 'object',
       properties: {},
@@ -119,4 +131,4 @@ function listCodes() {
   };
 }
 
-export default { tools, callTool } satisfies McpToolExport;
+export default { tools, callTool, meter: { credits: 1 } } satisfies McpToolExport;
