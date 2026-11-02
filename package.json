@@ -1,6 +1,6 @@
 {
   "name": "@pipeworx/mcp-httpcat",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "HTTP Cat MCP — wraps http.cat (free, no auth)",
   "type": "module",
   "main": "lib/index.js",
@@ -27,7 +27,7 @@
     "mode": "gateway",
     "slug": "httpcat",
     "gatewaySlug": "httpcat",
-    "sourceHash": "v1-7be0a52e44c822af532a3f51438f66ebcbf0ff93c910f7b655c646d867baa7e7",
-    "sourceCommit": "4844029e402d6bd2fe735add8abf6d46735f8ed5"
+    "sourceHash": "v1-7bd7c389c0ed121e115beda1a08f52c71669fdefcc44f2b3a48c367412d95fd8",
+    "sourceCommit": "0ca9712c0ac03bb0121cc7e81b202d0c45ac02ca"
   }
 }
